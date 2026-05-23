@@ -3,17 +3,21 @@ import { URLs } from "../model/url.js";
 export const RedirectURL = async (req, res) => {
     const { shortId } = req.params;
     try {
-        const resUrls = await URLs.find({ shortId: shortId });
-        const element = resUrls[0];
-        console.log(element);
+        const element = await URLs.findOne({ shortId: shortId });
 
-        res.redirect(element.longUrl);
+        if (!element) {
+            return res.status(404).send("<h1>URL Not Found</h1><p>The requested short link does not exist.</p>");
+        }
+
+        console.log("Redirecting to:", element.longUrl);
+        
+        return res.redirect(element.longUrl);
+
     } catch (err) {
         console.log(err);
-        res.status(500).json({
+        return res.status(500).json({
             ok: false,
+            message: "Internal Server Error"
         });
     }
 };
-
-
