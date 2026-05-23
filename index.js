@@ -8,16 +8,20 @@ import router from "./Routes/urlsRouter.js";
 dotenv.config();
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 ConnectDb();
 
-app.get("/", (req , res) => {
-    res.send("Getting Result")
-})
+app.get("/", (req, res) => {
+    res.send("Getting Result");
+});
+
+// App routes
 app.use("/", router);
 
-app.listen(5050, () => {
-    console.log("Port 5050 Connected")
-})
+const PORT = process.env.PORT || 5050;
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
+});
