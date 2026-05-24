@@ -3,16 +3,16 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import ConnectDb from "./Utils/ConnectDb.js";
-import { connectRedis } from "./Utils/redis.js"; 
+import { connectRedis } from "./Utils/redis.js";
 import router from "./Routes/urlsRouter.js";
 
 dotenv.config();
 const app = express();
 
 app.use(cors({
-   origin: "https://link-shortner-project.netlify.app",
-   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-   credentials: true
+    origin: "https://link-shortner-project.netlify.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true
 }));
 
 app.options("*", cors());
@@ -29,14 +29,21 @@ const PORT = process.env.PORT || 5050;
 
 const startServer = async () => {
     try {
-         ConnectDb();
-         connectRedis();
+
+        console.log("Connecting Mongo...");
+        await ConnectDb();
+        console.log("Mongo Connected");
+
+        console.log("Connecting Redis...");
+        await connectRedis();
+        console.log("Redis Connected");
 
         app.listen(PORT, "0.0.0.0", () => {
             console.log(`Server running on port ${PORT}`);
         });
+
     } catch (err) {
-        console.error("Database connection failure at startup:", err);
+        console.error("Startup Error:", err);
         process.exit(1);
     }
 };
