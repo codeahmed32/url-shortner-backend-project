@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import ConnectDb from "./Utils/ConnectDb.js";
-import { connectRedis } from "./Utils/redis.js";
+// import { connectRedis } from "./Utils/redis.js";
 import router from "./Routes/urlsRouter.js";
 
 dotenv.config();
@@ -30,13 +30,13 @@ const PORT = process.env.PORT || 5050;
 const startServer = async () => {
     try {
 
-        console.log("Connecting Mongo...");
+        // console.log("Connecting Mongo...");
         await ConnectDb();
         console.log("Mongo Connected");
 
-        console.log("Connecting Redis...");
-        await connectRedis();
-        console.log("Redis Connected");
+        // console.log("Connecting Redis...");
+        //  connectRedis();
+        // console.log("Redis Connected");
 
         app.listen(PORT, "0.0.0.0", () => {
             console.log(`Server running on port ${PORT}`);
