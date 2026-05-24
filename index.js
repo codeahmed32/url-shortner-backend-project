@@ -3,16 +3,19 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import ConnectDb from "./Utils/ConnectDb.js";
-import { connectRedis } from "./Utils/redis.js"; // Fix 1: Added missing import
+import { connectRedis } from "./Utils/redis.js"; 
 import router from "./Routes/urlsRouter.js";
 
 dotenv.config();
 const app = express();
 
-app.use(cors({ origin: "*" }));
+app.use(cors({
+   origin: ["https://link-shortner-project.netlify.app"],
+   methods: ["GET", "POST"],
+   credentials: true
+}));
 app.use(express.json());
 
-// App routes
 app.use("/", router);
 
 app.get("/", (req, res) => {
@@ -21,7 +24,6 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 5050;
 
-// Fix 2: Wrap connections inside a clean async block before starting server listener
 const startServer = async () => {
     try {
         // Connect MongoDB
