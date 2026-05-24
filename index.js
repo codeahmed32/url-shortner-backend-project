@@ -21,7 +21,7 @@ app.use(express.json());
 const limiter = rateLimit({
     windowMs: 1 * 60 * 1000, 
     max: 5, 
-    message: { ok: false, message: "Boht zyada requests ho gayi hain. 1 minute baad koshish karein." }
+    message: { ok: false, message: "Enough of the reuests" }
 });
 
 app.use("/save", limiter);
