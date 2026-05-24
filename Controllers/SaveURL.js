@@ -10,7 +10,7 @@ export const SaveURL = async (req, res) => {
     }
 
     try {
-        const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/;
+        const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
         
         if (!urlRegex.test(longUrl)) {
             return res.status(400).json({ 
