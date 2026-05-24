@@ -5,17 +5,21 @@ export const RedirectURL = async (req, res) => {
     const { shortId } = req.params;
     try {
         const urlFromCache = await getCache(shortId);
+        
         if (urlFromCache) {
-            console.log("Fetched from Redis Cache");
-            const parsedUrl = JSON.parse(urlFromCache.trim());
-            return res.redirect(parsedUrl);
+            console.log("Fetched from Redis Cache:", urlFromCache);
+            return res.redirect(urlFromCache); 
         }
+
         const element = await URLs.findOne({ shortId: shortId });
         if (!element) {
             return res.status(404).send("<h1>URL Not Found</h1><p>The requested short link does not exist.</p>");
         }
+
         console.log("Redirecting to:", element.longUrl);
-        await setCache(shortId, JSON.stringify(element.longUrl), 7200);
+        
+        await setCache(shortId, element.longUrl, 7200);
+        
         return res.redirect(element.longUrl);
     } catch (err) {
         console.log("Redirection Error:", err);
